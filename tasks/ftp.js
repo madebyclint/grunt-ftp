@@ -11,6 +11,7 @@ module.exports = function (grunt) {
 		var done = this.async();
 		var options = this.options();
 		var fileCount = 0;
+		var fullPath = [];
 
 		if (options.host === undefined) {
 			throw new Error('`host` required');
@@ -34,7 +35,7 @@ module.exports = function (grunt) {
 						next(err);
 						return;
 					}
-
+					fullPath.push(options.host + finalRemotePath);
 					fileCount++;
 					ftp.raw.quit();
 					next();
@@ -49,6 +50,7 @@ module.exports = function (grunt) {
 
 			if (fileCount > 0) {
 				grunt.log.writeln(chalk.green(fileCount, fileCount === 1 ? 'file' : 'files', 'uploaded successfully'));
+				grunt.log.writeln(chalk.yellow(fullPath));
 			} else {
 				grunt.log.writeln(chalk.yellow('No files uploaded'));
 			}
